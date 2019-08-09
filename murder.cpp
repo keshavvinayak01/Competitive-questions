@@ -6,14 +6,16 @@ typedef long long ll;
 ll merge(int a[], int left, int mid, int right){
 	int i=left, j = mid, k=0;
 	ll count = 0;
-	int temp[right - left + 1]; 
+	bool repeat = false;
+	int temp[right - left + 1]; 	
 	while(i < mid && j <= right){
+		repeat = false;
 		if(a[i] < a[j]){
+			count += (right - j + 1)*a[i];				
 			temp[k++] = a[i++];
 		}
 		else{
 			temp[k++] = a[j++];
-			count += mid - 1;
 		}
 	}
 	while(i < mid) temp[k++] = a[i++];
@@ -43,11 +45,19 @@ ll solve(int a[], int n){
 }
 
 int main(){
-	int n;
-	cin>>n;
-	int arr[n];
-	for(int i=0 ; i < n ; i++)
-		cin>>arr[i];
-
+	int t;
+	cin>>t;
+	while(t--){
+	
+		int n;
+		cin>>n;
+		int arr[n];
+		for(int i=0 ; i < n ; i++)
+			cin>>arr[i];
+		// cout<<endl;	
+		cout<<solve(arr, n)<<endl;
+	
+	}
+	
 	return 0;
 }

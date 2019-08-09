@@ -24,6 +24,6 @@ int main(){
 	for(int i=0; i < n; i++)
 		cin>>arr[i];
 	ll count = variationPairs(arr, n, k);
-
+	cout << count << endl;
 	return 0;
 }
