@@ -1,137 +1,137 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define N 10
-
-bool checkHorizontal(int grid[N][N], string words[], int index, int row, int column){
-	int count = 0;
-	if(N - column < words[index].size()){
-		return false;
-	}
-	for(int i = column; i < column + words[index].size(); i++){
-		if(grid[row][i] == '-' || grid[row][i] == words[index][count]){
-			count++;
-		}
-		else{
-			break;
-		}
-	}
-	if(count == words[index].size()){
-		return true;
-	}
-	return false;
+void print(char board[N][N]){
+    for(int i=0;i<N;i++){
+        for(int j=0;j<N;j++){
+            cout<<board[i][j];
+        }
+        cout<<endl;
+    }
+ //   cout<<endl;
 }
-
-bool checkVertical(int grid[N][N], string words[], int index, int row, int column){
-	int count = 0;
-	for(int j = row; j < row + words[index].size(); j++){
-		if(grid[j][column] == '-' || grid[j][column] == words[index][count]){
-			count++;
-		}
-		else{
-			break;
-		}
-	}
-	if(count == words[index].size()){
-		return true;
-	}
-	return false;	
+//reset right
+void resetHorizontal(char board[N][N],int row,int col,string s,int *freq){
+   // cout<<"resetHorizontal"<<endl;
+    for(int i=col,k=0;k<s.length();i++,k++){
+        if(freq[k]==1){
+            board[row][i]='-';
+        }
+    }
+  //  print(board);
 }
-
-void removeHorizontal(int grid[N][N], int row, vector<int> indices){
-	for(int i=indices.begin(); i < indices.end(); i++){
-		grid[row][indices[i]] = '-';
-	}
+// reset down
+void resetVertical(char board[N][N],int row ,int col,string s,int *freq){
+  //  cout<<"resetVertical"<<endl;
+    for(int i=row,k=0;k<s.length();i++,k++){
+        if(freq[k]==1){
+            board[i][col]='-';
+        }
+    }
+  //  print(board);
 }
-
-void removeVertical(int grid[N][N], int column, vector<int> indices){
-	for(int i=indices.begin(); i < indices.end(); i++){
-		grid[row][indices[i]] = '-';
-	}
+// set right
+void setHorizontal(char board[N][N],int row,int col,string s,int*freq){
+   // cout<<"setHorizontal"<<endl;
+    for(int i=col,k=0;k<s.length();i++,k++){
+        if(board[row][i]=='-'){
+            board[row][i]=s[k];
+            freq[k]=1;
+        }
+    }
+  //  print(board);
 }
-
-void applyHorizontal(char grid[N][N], string words[], int index, int row, int column, vector<int> arr){
-	int count = 0;
-	for(int i = column; i < column + words[index].size(); i++){
-		if(grid[row][i] == '-'){
-			arr.push_back(i);			
-			grid[row][i] = words[index][count++];
-		}
-		else if(grid[row][i] == words[index][count]){
-			grid[row][i] = words[index][count++];
-		}
-	}
+// set down
+void setVertical(char board[N][N],int row, int col,string s,int *freq){
+  //  cout<<"setVertical"<<endl;
+    for(int i=row,k=0;k<s.length();i++,k++){
+        if(board[i][col]=='-'){
+            board[i][col]=s[k];
+            freq[k]=1;
+        }
+    }
+ //   print(board);
 }
-
-void applyVertical(char grid[N][N], string words[], int index, int row, int column, vector<int> arr){
-	int count = 0;
-	for(int i = row; i < row + words[index].size(); i++){
-		if(grid[i][column] == '-'){
-			arr.push_back(i);			
-			grid[i][column] = words[index][count++];
-		}
-		else if(grid[i][column] == words[index][count]){
-			grid[i][column] = words[index][count++];
-		}
-	}
+///down
+bool isVertical(char board[N][N],int row,int col,string s){
+    int i=row,k=0;
+    while(k<s.length()&&i<N){
+        if(board[i][col]=='+'){
+            return false;
+        }else if(board[i][col]!='-'&&board[i][col]!=s[k]){
+            return false;
+        }
+        i++;k++;
+    }
+    if(k<s.length()){
+        return false;
+    }else{
+        return true;
+    }
 }
-
-bool solve_crossword(char grid[N][N], string words[], int index){
-	if(index = words.size()){
-		for(int i=0; i < N; i++){
-			for(int j=0; j < N ; j++)
-				cout<<grid[i][j];
-			cout<<endl;
-		}
-		return true;
-	}
-	for(int i=0; i < N; i++){
-		for(int j=0; j < N ; j++){
-			if(grid[i][j] == '-' || grid[i][j] == words[index][0]){
-				if(checkHorizontal(grid, words, index, i, j)){
-					vector<int> arr;
-					applyHorizontal(grid, words[index], i, j, arr);
-					if(solve_crossword(grid, words, index+1)){
-						return true;
-					}
-					removeHorizontal(grid, i, arr);
-				}
-				if(checkVertical(grid, words, index, j)){
-					int arr[N];
-					applyVertical(grid, words[index], j, arr);
-					if(solve_crossword(grid, words, index+1)){
-						return true;
-					}
-					removeVertical(grid, j, arr);
-				}
-			}
-		}
-	}
-	return false;
+///right
+bool isHorizontal(char board[N][N],int row ,int col,string s){
+    int i=col,k=0;
+    while(k<s.length()&&i<N){
+        if(board[row][i]=='+'){
+            return false;
+        }else if(board[row][i]!='-'&&board[row][i]!=s[k]){
+            return false;
+        }
+        i++;k++;
+    }
+    if(k<s.length()){
+        return false;
+    }else{
+        return true;
+    }
 }
-
-
+bool crossword(char board[N][N],string word,int index){
+    if(index>=word.length()){
+        return true;
+    }
+    string s="";
+    int curr=index;
+    while(word[index]!=';'&&word[index]!='\0'){
+        index++;
+    }
+    s=word.substr(curr,index-curr);
+   // cout<<s<<endl;
+    for(int r=0;r<10;r++){
+        for(int c=0;c<10;c++){
+            if(board[r][c]=='-'||board[r][c]==s[0]){
+                if(isVertical(board,r,c,s)){
+                    int freq[s.length()]={0};
+                    setVertical(board,r,c,s,freq);
+                    if(crossword(board,word,index+1)){
+                       // cout<<"hello"<<endl;
+                        return true;
+                    }else{
+                        resetVertical(board,r,c,s,freq);
+                    }
+                }else if(isHorizontal(board,r,c,s)){
+                    int freq[s.length()]={0};
+                    setHorizontal(board,r,c,s,freq);
+                    if(crossword(board,word,index+1)){
+                        return true;
+                    }else{
+                        resetHorizontal(board,r,c,s,freq);
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
 int main(){
-
-	char grid[N][N];
-	for(int i=0; i < N;i++){
-		string s;
-		cin>>s;
-		for(int j=0; j < N; j++){
-			grid[i][j] = s[j];
-		}
-	}
-	string k;
-	cin>>k;
-	string words[100];
-	int start = 0;
-	int word_count = 0;
-	for(int i=0;i < k.size(); i++){
-		while(k[i] != ';' && i < k.size()){
-			words[word_count] += k[i];
-			i++;
-		}
-		word_count++;
-	}
-	solve_crossword(grid, words, 0);
-	return 0;
+    char board[N][N];
+    for(int i=0;i<N;i++){
+        for(int j=0;j<N;j++){
+            cin>>board[i][j];
+        }
+    }
+    string s;
+    cin>>s;
+    bool ans= crossword(board,s,0);
+    print(board);
 }
