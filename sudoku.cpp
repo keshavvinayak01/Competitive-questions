@@ -10,16 +10,27 @@ using namespace std;
 
 bool isSafeInRow(int grid[N][N], int row, int num){
 	for(int i=0; i < N; i++){
-		if(grid[row][i] == num)
+		if(grid[row][i] == num){
 			return false;
+		}
 	}
 	return true;
 }
 
+void printgrid(int grid[N][N]){
+	for(int i=0; i < N; i++){
+		for(int j = 0 ; j < N ; j++)
+			cout << grid[i][j] << " ";
+		cout << endl;
+	}
+}
+
+
 bool isSafeInColumn(int grid[N][N], int column, int num){
 	for(int i=0; i < N; i++)
-		if(grid[i][column] == num)
+		if(grid[i][column] == num){
 			return false;
+		}
 	return true;
 }
 
@@ -33,6 +44,7 @@ bool isSafeInGrid(int grid[N][N], int row, int col, int num){
 			}
 		}
 	}
+	return true;
 }
 bool isSafe(int grid[N][N], int row, int col, int num){
 	if(isSafeInRow(grid, row, num) && isSafeInColumn(grid, col, num) && isSafeInGrid(grid, row, col, num))
@@ -56,6 +68,8 @@ bool findEmptyLocation(int grid[N][N], int &row, int &col){
 bool solveSudoku(int grid[N][N]){
 	int row,col;
 	if(!findEmptyLocation(grid, row, col)){
+		// cout << "ANSWER : \n";
+		// printgrid(grid);
 		return true;
 	}
 	for(int i = 1;i <=9;i++){
@@ -64,7 +78,9 @@ bool solveSudoku(int grid[N][N]){
 			if(solveSudoku(grid)){
 				return true;
 			}
-			grid[row][col] = 0;
+			else{
+				grid[row][col] = 0;
+			}
 		}
 	}
 	return false;
@@ -74,18 +90,12 @@ int main(){
 
 	int grid[N][N];
 	for(int i=0 ; i < N; i++){
-		string s;
-		cin>>s;
-		for(int j = 0; j < s.length(); j++){
-			grid[i][j] = s[j] - '0';
+		for(int j = 0; j < N; j++){
+			cin >> grid[i][j];
 		}
 	}
-	solveSudoku(grid);
-	for(int i=0;i < N;i++){
-		for(int j=0;j<N;j++)
-			cout<<grid[i][j];
-	cout<<endl;
-	}
+	if(solveSudoku(grid)) cout << "true\n";
+	else cout << "false\n";
 
 	return 0;
 }
