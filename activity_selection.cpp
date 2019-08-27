@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
     int max_now = a[0].second;
     int count = 1;
     for(int i=1; i < n; i++){
-        if(a[i].first <= max_now){
+        if(a[i].first >= max_now){
             count++;
             max_now = a[i].second;
         }
