@@ -9,7 +9,6 @@ bool cmp(const pair<int, int> &a, const pair<int, int> &b){
 }
 
 int main(){
-
     int n, k;
     cin >> n >> k;
     pair<int, int>* pieces = new pair<int, int>[n];
