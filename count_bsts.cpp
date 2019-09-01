@@ -1,16 +1,16 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define MOD 1000000007
-
-int countBST(int n){
-    int* output = new int[n];
+typedef long long ll;
+ll countBST(int n){
+    ll* output = new ll[n + 1];
     output[0] = 1;
     output[1] = 1;
     for(int i = 2 ; i <= n; i++){
-        int ans = 0;
+        ll ans = 0;
         for(int k = 1 ; k <= i; k++){
-            ans += output[k-1]*output[i-k];
-        output[i] = ans;
+            ans += ((output[k-1]%MOD)*(output[i-k]%MOD))%MOD;
+        output[i] = ans%MOD;
         }
     }
     
