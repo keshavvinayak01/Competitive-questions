@@ -62,7 +62,7 @@ int main(){
     for(int i = 0 ; i < q; i++){
         if(solution[queries[i][0] - 1][queries[i][1] - 1] == 1)
             cout << "Yes"
-        else cout << "No"
+        else cout << 
     }
     return 0;
 }
