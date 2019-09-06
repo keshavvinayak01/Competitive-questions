@@ -24,7 +24,17 @@ int editDistances(char* s1, char* s2, int **dp, int m, int n){
     return ans;
 }
 
-int editDistance(string s1, string s2, int** dp, int m, int n){
+int editDistance(string s1, string s2){
+    int m = s1.length();
+    int n = s2.length();
+    int **dp = new int*[m + 1];
+    for(int i = 0 ; i <= m ; i++){
+        dp[i] = new int [n + 1];
+        for(int j = 0; j <= n; j++){
+            dp[i][j] = -1;
+        }
+    }
+
     char s12[m+1], s22[n+1];
 
     for(int i = 0; i < m; i++)
@@ -39,6 +49,6 @@ int main(){
     cin >> s1;
     cin >> s2;
     
-    cout << editDistance(s1, s2, dp, m, n) << endl;
+    cout << editDistance(s1, s2) << endl;
     return 0;
 }
