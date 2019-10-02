@@ -16,6 +16,7 @@ int solve(string s){
         }
         last[s[i-1]] = i-1;
     }
+    for(int i = 0; i < )
     return dp[n]%MOD;
 }
 
