@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-// void print(int** edges, int n, int sv, bool* visited) {
+// void printDFS(int** edges, int n, int sv, bool* visited) {
 //     cout << sv << endl;
 //     visited[sv] = true;
 //     for(int i = 0 ; i < n ; i++) {
@@ -13,10 +13,32 @@ using namespace std;
 //     }
 // }
 
-void printBFS(int** edges, int n, int sv) {
-    queue<int> pendingVertices;
+void BFS(int** edges, int n) {
     bool* visited = new bool[n];
-    for(int i = 0 ; i < n ; i++) visited[i] = false;
+    for(int i = 0; i < n; i++) visited[i] = false;
+    
+    for(int i  = 0 ; i  <n; i++){
+        if(!visited[i])
+            printBFS(edges, n, i, visited);
+    }
+    delete[] visited;
+}
+
+void DFS(int** edges, int n) {
+    bool* visited = new bool[n];
+    for(int i = 0; i < n; i++) visited[i] = false;
+    
+    for(int i  = 0 ; i  <n; i++){
+        if(!visited[i])
+            printDFS(edges, n, i, visited);
+    }
+    delete[] visited;
+}
+
+
+
+void printBFS(int** edges, int n, int sv, bool* visited) {
+    queue<int> pendingVertices;
     
     pendingVertices.push(sv);
     visited[sv] = true;
@@ -51,8 +73,10 @@ int main() {
         edges[f][s] = 1;
         edges[s][f] = 1;
     }
-    
-    printBFS(edges, n, 0);
+    cout << "DFS \n";
+    DFS(edges, n);
+    cout << "BFS \n";
+    BFS(edges, n);
     // print(edges, n, 0, visited);
     cout << endl;
     for(int i = 0 ; i < n; i++) delete[] edges[i];
