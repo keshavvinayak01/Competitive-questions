@@ -1,51 +1,65 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-struct edge{
-    int a, b, weight;
+class Edge{
+    public:
+        int src, dest, weight;
 };
-
-void findMST(edge* inputs, int* parent, vector<edge> outputs, int v, int e) {
-    int count = 0;
-    for(int i = 0; i < e; i++){
-        if(count >= e-1) break;
-        if(parent[inputs[i].a] != parent[inputs[i].b]){
-            // cout << "parents : ";
-            // for(int i = 0 ; i < e; i++) cout << parent[i] << " ";
-            // cout << endl;
-            if(inputs[i].a > inputs[i].b) {
-                int temp = inputs[i].a;
-                inputs[i].a = inputs[i].b;
-                inputs[i].b = temp;
-            }
-            outputs.push_back(inputs[i]);
-            count++;
-            parent[inputs[i].a] = parent[parent[inputs[i].a]];
-            parent[inputs[i].b] = parent[inputs[i].a];
-        }
-    }
-    for(int i = 0; i < outputs.size(); i++){
-        cout << outputs[i].a << " " << outputs[i].b << " " << outputs[i].weight << endl;
-    }
+bool compare(Edge e1, Edge e2){
+    return e1.weight < e2.weight;
 }
 
-bool cmpEdge(edge a, edge b){
-    return a.weight < b.weight;
+int getParent(int* parent, int v) {
+    if(parent[v] == v) return  v;
+    return getParent(parent, parent[v]);
+}
+
+Edge* kruskals(Edge* edges, int n, int E) {
+    sort(edges, edges + n, compare);
+
+    Edge* output = new Edge[n-1];
+
+    int* parent = new int[n];
+    for(int i = 0 ; i < n ; i++) parent[i] = i;
+
+    int count = 0;
+    int i = 0;
+    while(count < n-1){
+        Edge currentEdge = edges[i];
+        int srcParent = getParent(parent, currentEdge.src);
+        int destParent = getParent(parent, currentEdge.dest);
+        if(srcParent != destParent) {
+            output[count] = currentEdge;
+            count++;
+            parent[srcParent] = parent[destParent];
+        }
+        i++;
+    }
+    return output;
 }
 
 int main(){
-    int v, e;
-    cin >> v >> e;
-    edge inputs[e];
-    int parent[v];
-    vector<edge> outputs;
-    
-    for(int i = 0 ; i < v; i++) parent[i] = i;
+    int n, E;
+    cin >> n >> E;
+    Edge* edges = new Edge[E];
 
-    for(int i = 0; i < e; i++) cin >> inputs[i].a >> inputs[i].b >> inputs[i].weight;
-    
-    sort(inputs, inputs + e, cmpEdge);
-    
-    findMST(inputs, parent, outputs, v, e);
+    for(int i = 0; i < E; i++){
+        int s, d, w;
+        cin >> s >> d >> w;
+        edges[i].src = s;
+        edges[i].dest = d;
+        edges[i].weight = w;
+    }
+
+    Edge* output = kruskals(edges, n, E);
+    for(int i = 0 ; i< n-1; i++){
+        if(output[i].src < output[i].dest) {
+            cout << output[i].src << " " << output[i].dest << " " << output[i].weight << endl;
+        }
+        else {
+            cout << output[i].dest << " " << output[i].src << " " << output[i].weight << endl;
+        }
+        
+    }
     return 0;
 }
