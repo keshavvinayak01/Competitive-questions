@@ -1,5 +1,5 @@
 ## Compilation of all the competitive programming questions solved by me for practice.
-> Aiming for 500 questions in this repository by end of year.
+> Aiming for 500+ questions in this repository in the span of 1 year.
 
 **Updates**
 
