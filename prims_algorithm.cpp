@@ -21,7 +21,7 @@ void prims(int** edges, int n) {
     parent[0] = -1;
     weight[0] = 0;
 
-    for(int i = 0 ; i <  -1; i++){
+    for(int i = 0 ; i < n-1; i++){
         // Get unvisited vertex with minimum weight
         int minVertex = getMinVertex(visited, weight, n);
         visited[minVertex] = true;
