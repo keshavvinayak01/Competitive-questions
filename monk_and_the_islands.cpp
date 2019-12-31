@@ -9,26 +9,28 @@ int getShortestPath(vector<int>* edges, int n) {
     pendingVertices.push(0);
     
     visited[0] = true;
+    
     int currentLevel = 0;
+    
+    int* level = new int[n];
+    
+    level[0] = 0;
     
     while(!pendingVertices.empty()) {
         int currentVertex = pendingVertices.front();
         pendingVertices.pop();
-        visited[currentVertex] = true;
         
         for(int i = 0 ; i < edges[currentVertex].size(); i++) {
             int vertex = edges[currentVertex][i];
-            if(vertex == n-1) {
-                return ++currentLevel;
-            }
+            
             if(!visited[vertex]) {
                 pendingVertices.push(vertex);
                 visited[vertex] = true;
+                level[vertex] = level[currentVertex]+1;
             }
         }
-        currentLevel++;
     }
-    return n-1;
+    return level[n-1];
 }
 
 int main() {
