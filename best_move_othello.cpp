@@ -2,7 +2,7 @@
 #include <vector>
 using namespace std;
 
-int** makeAMove(int** board, int x, int y, int player,int isCheck);
+int** makeAMove(int** board, int x, int y, int player,bool isCheck);
 
 vector<pair<int, int>*>* possibleMoves(int** board, int player) {
 	vector<pair<int, int>*>* output = new vector<pair<int, int>*>();
@@ -34,7 +34,7 @@ int evaluateBoard(int** board, bool& completed) {
 	return count[1] - count[2];
 }
 
-int** makeAMove(int** board, int x, int y, int player,int isCheck) {
+int** makeAMove(int** board, int x, int y, int player,bool isCheck) {
 
 	int** newBoard;
 
@@ -95,8 +95,6 @@ int** makeAMove(int** board, int x, int y, int player,int isCheck) {
 		return NULL;
 	}
 }
-
-int kkk = 0;
 
 void printBoard(int** board) {
 	for (int i = 0 ; i < 4; i++) {
