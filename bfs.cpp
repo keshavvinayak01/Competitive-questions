@@ -35,8 +35,6 @@ void DFS(int** edges, int n) {
     delete[] visited;
 }
 
-
-
 void printBFS(int** edges, int n, int sv, bool* visited) {
     queue<int> pendingVertices;
     
