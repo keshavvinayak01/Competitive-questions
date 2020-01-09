@@ -27,7 +27,7 @@ int main() {
     }
 
     for(int i = 0 ; i < t ; i++) {
-        if(isCube[queries[i]] == -1) {
+        if(isCube[queries[i]] == -1) {  
             cout << "Case " << i + 1 << ": Not Cube Free" << endl;
         }
         else {
