@@ -26,6 +26,6 @@ void eulerPhi(int n){
 }
 int main(){
 
-	eulerPhi(10);
+	eulerPhi(5);
 	return 0;
 }
