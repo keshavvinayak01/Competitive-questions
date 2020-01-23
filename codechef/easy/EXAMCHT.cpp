@@ -11,7 +11,6 @@ int main() {
     while(t--) {
         cin >> a >> b;
         ans = 1;
-        bool visited[100000000];
 
         for(int i = 2 ; i <= min(a, b); i++) {
             for(int j = i; j < max(a, b); j += i) {
