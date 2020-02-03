@@ -21,7 +21,7 @@ int main() {
             cout << ans << endl;
             continue;
         }
-        cout << s << end
+        cout << s << endl;
     }
     return 0;
 }
