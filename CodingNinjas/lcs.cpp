@@ -78,13 +78,8 @@ int main(){
             dp[i][j] = -1;
         }
     }
-    // cout << lcs(a,b);
+    cout << lcs(a,b);
     // cout << lcs_dynamic(a, b, m, n, dp);
-    cout << lcs_iterative(a, b) << endl;
-    for(int i = 0 ; i <= m; i++){
-        delete[] dp[i];
-    }
-    delete[] dp;
     return 0;
 
 }
