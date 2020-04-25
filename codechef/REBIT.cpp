@@ -2,123 +2,90 @@
 // Find combined probabilities and return
 #include<bits/stdc++.h>
 typedef unsigned long long int lli; 
+#define MOD 998244353
 using namespace std;
 
 struct probabs {
     lli zero, one, a, A;
 };
 
-struct Triplet {
-    lli x, y, gcd;
-};
-
-lli normalGCD(lli a, lli b) {
-    if(b == 0) return a;
-    else return normalGCD(b, a%b);
+lli power(lli a, lli n) {
+    lli res = 1;
+    while(n) {
+        if(n & 1)
+            res = (res * a) % MOD;
+        n >>= 1;
+        a = (a * a) % MOD;
+    }
+    return res;
 }
 
-lli gcdExtended(lli a, lli b, lli *x, lli *y); 
-lli modInverse(lli a, lli m) 
-{ 
-    lli x, y; 
-    lli g = gcdExtended(a, m, &x, &y); 
-    lli res = (x%m + m) % m; 
-    return res; 
-} 
-  
-lli gcdExtended(lli a, lli b, lli *x, lli *y) 
-{ 
-    if (a == 0) 
-    { 
-        *x = 0, *y = 1; 
-        return b; 
-    } 
-  
-    lli x1, y1; 
-    lli gcd = gcdExtended(b%a, a, &x1, &y1); 
-  
-    *x = y1 - (b/a) * x1; 
-    *y = x1; 
-  
-    return gcd; 
-} 
-
-probabs combineSolution(probabs left, probabs right, char op) {
+probabs computeSolution(probabs left, probabs right, char op) {
     probabs newProbs;
     if(op == '|') {
-        newProbs.zero = left.zero * right.zero;
-        newProbs.one = left.zero*right.one + left.one*right.zero + left.one*right.one + left.one*right.a +
-                       left.one*right.A + left.a*right.one + left.a*right.A + left.A*right.one +
-                       left.A*right.a;
-        newProbs.a = left.zero*right.a + left.a*right.zero + left.a*right.a;
-        newProbs.A = left.zero*right.A + left.A*right.zero + left.A*right.A;
+        newProbs.zero = (left.zero * right.zero) % MOD;
+        newProbs.one = ((left.zero*right.one)%MOD + (left.one*right.zero)%MOD + (left.one*right.one)%MOD + 
+                       (left.one*right.a)%MOD + (left.one*right.A)%MOD + (left.a*right.one)%MOD + 
+                       (left.a*right.A)%MOD + (left.A*right.one)%MOD + (left.A*right.a)%MOD)%MOD;
+        newProbs.a = ((left.zero*right.a)%MOD + (left.a*right.zero)%MOD + (left.a*right.a)%MOD)%MOD;
+        newProbs.A = ((left.zero*right.A)%MOD + (left.A*right.zero)%MOD + (left.A*right.A)%MOD)%MOD;
     }
     else if(op == '^') {
-        newProbs.zero = left.zero*right.zero + left.one*right.one + left.a*right.a + left.A*right.A;
-        newProbs.one = left.zero*right.one + left.one*right.zero + left.a*right.A + left.A*right.a;
-        newProbs.a = left.zero*right.a + left.one*right.A + left.a*right.zero + left.A*right.one;
-        newProbs.A = left.zero*right.A + left.one*right.a + left.a*right.one + left.A*right.zero;
+        newProbs.zero = ((left.zero*right.zero)%MOD + (left.one*right.one)%MOD + (left.a*right.a)%MOD + 
+                        (left.A*right.A)%MOD)%MOD;
+        newProbs.one = ((left.zero*right.one)%MOD + (left.one*right.zero)%MOD + (left.a*right.A)%MOD + 
+                       (left.A*right.a)%MOD)%MOD;
+        newProbs.a = ((left.zero*right.a)%MOD + (left.one*right.A)%MOD + (left.a*right.zero)%MOD + 
+                        (left.A*right.one)%MOD)%MOD;
+        newProbs.A = ((left.zero*right.A)%MOD + (left.one*right.a)%MOD + (left.a*right.one)%MOD + 
+                      (left.A*right.zero)%MOD)%MOD;
     }
     else if(op == '&') {
-        newProbs.zero = left.zero*right.zero + left.zero*right.one + left.zero*right.a + left.zero*right.A +
-                        left.one*right.zero + left.a*right.zero + left.a*right.A + left.A*right.zero +
-                        left.A*right.a;
-        newProbs.one = left.one*right.one;
-        newProbs.a = left.one*right.a + left.a*right.one + left.a*right.a;
-        newProbs.A = left.one*right.A + left.A*right.one + left.A*right.A;
+        newProbs.zero = ((left.zero*right.zero)%MOD + (left.zero*right.one)%MOD + (left.zero*right.a)%MOD + 
+                        (left.zero*right.A)%MOD + (left.one*right.zero)%MOD + (left.a*right.zero)%MOD + 
+                        (left.a*right.A)%MOD + (left.A*right.zero)%MOD + (left.A*right.a)%MOD)%MOD;
+        newProbs.one = (left.one*right.one)%MOD;
+        newProbs.a = ((left.one*right.a)%MOD + (left.a*right.one)%MOD + (left.a*right.a)%MOD)%MOD;
+        newProbs.A = ((left.one*right.A)%MOD + (left.A*right.one)%MOD + (left.A*right.A)%MOD)%MOD;
     }
     return newProbs;
 }
 
-probabs getSolution(string s, lli start, lli end) {
-    if(end == start) {
-        probabs newProb = {1, 1, 1, 1};
-        return newProb;
+probabs getSolution(string s) {
+    stack<char> brackets, operators;
+    stack<probabs> temp_res;
+    probabs init, first, second, result;
+    init.zero = init.one = init.a = init.A = 1;
+    char op;
+    if(s.size() == 1) return init;
+    for(char a : s) {
+        if(a == '(') brackets.push(a);
+        else if(a == '^' || a == '&' || a == '|') operators.push(a);
+        else if(a == '#') temp_res.push(init);
+        else {
+            op = operators.top(); operators.pop();
+            second = temp_res.top(); temp_res.pop();
+            first = temp_res.top(); temp_res.pop();
+            result = computeSolution(first , second, op);
+            temp_res.push(result);
+        } 
     }
-    else {
-        lli mid = (start + end)/2;
-        if(s[mid] == '#') mid--;
-        probabs leftSoln = getSolution(s, start, mid-1);
-        probabs rightSoln = getSolution(s, mid + 1, end);
-        return combineSolution(leftSoln, rightSoln, s[mid]);
-    }
+    return temp_res.top();
 }
 
 int main() {
     ios::sync_with_stdio(false);cin.tie(0);
-    lli MOD = 998244353;
     int t;
     cin >> t;
     while(t--) {
         string s;
         cin >> s;
-        
-        s.erase(remove(s.begin(), s.end(), ')'), s.end());
-        s.erase(remove(s.begin(), s.end(), '('), s.end());
-
-        probabs solution = getSolution(s, 0, s.length()-1);
-        lli q = solution.zero + solution.one + solution.a + solution.A;
-
-        lli c = normalGCD(solution.zero ,q);
-        solution.zero /= c;
-        lli temp_q = q/c;
-        lli ans1 = ((solution.zero % MOD) * (modInverse(temp_q, MOD)%MOD))%MOD;
-
-        c = normalGCD(solution.one ,q);
-        solution.one /= c;
-        temp_q = q/c;
-        lli ans2 = ((solution.one % MOD) * (modInverse(temp_q, MOD)%MOD))%MOD;
-
-        c = normalGCD(solution.a ,q);
-        solution.a /= c;
-        temp_q = q/c;
-        lli ans3 = ((solution.a % MOD) * (modInverse(temp_q, MOD)%MOD))%MOD;
-        
-        c = normalGCD(solution.A ,q);
-        solution.A /= c;
-        temp_q = q/c;
-        lli ans4 = ((solution.A % MOD) * (modInverse(temp_q, MOD)%MOD))%MOD;
-        cout << ans1 << " " << ans2 << " " << ans3 << " " << ans4 << endl;
+        lli hash_count = 0;
+        for(char ch : s) if(ch == '#') hash_count++;
+        probabs soln = getSolution(s);
+        hash_count = power(power(4, hash_count), MOD -2);
+        cout << (soln.zero * hash_count) % MOD << " " << (soln.one * hash_count) % MOD << " "
+             << (soln.a * hash_count) % MOD << " " << (soln.A * hash_count) % MOD << endl;           
     }
 
     return 0;
