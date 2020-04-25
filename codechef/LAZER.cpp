@@ -18,7 +18,7 @@ int main() {
         query queries[q];
         for(int i = 0 ; i < q ; i++) cin >> queries[i].x1 >> queries[i].x2 >> queries[i].y;
         for(int i = 0 ; i < q ; i++) {
-            count = 0;
+            count = 0;  
             for(int j = queries[i].x1-1; j < queries[i].x2-1; j++) {
                 if(queries[i].y >= min(arr[j], arr[j+1]) && 
                    queries[i].y <= max(arr[j], arr[j+1])) count++;
