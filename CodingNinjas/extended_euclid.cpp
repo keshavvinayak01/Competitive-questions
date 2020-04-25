@@ -7,7 +7,7 @@ struct Triplet {
 
 Triplet extendedEuclid(int a, int b) {
     if(b == 0) {
-        Triplet ans;
+        Triplet ans;    
         ans.gcd = a;
         ans.x = 1;
         ans.y = 0;
