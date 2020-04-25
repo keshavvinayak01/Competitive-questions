@@ -37,7 +37,7 @@ int main() {
             }
         }
         if(!ans_f) {
-            cout << 0 << endl;
+            cout << 0 << endl;  
         }
         else {
             bits1 = get_binary(arr[0]);
