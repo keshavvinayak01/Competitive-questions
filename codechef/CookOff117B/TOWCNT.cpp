@@ -8,10 +8,19 @@ using namespace std;
 struct obs {
     lli t, x, y;
 };
+bool sortX(obs a, obs b) {
+    return a.x < b.x;
+}
+double calcSlope(obs a, obs b) {
+    if(a.y == b.y) return 0;
+    else 
+        return(double(b.y - a.y) / double(b.x - a.x));
+}
 
 int main() {
     ios::sync_with_stdio(false);cin.tie(0);
-    lli t, h, n, tt, tx, ty, l, r, up_max, down_max;
+    lli t, h, n, tt, tx, ty, l, r; 
+    int slope_up, slope_down, temp_slope;
     cin >> t;
     while(t--) {
         cin >> h >> n;
@@ -20,25 +29,27 @@ int main() {
             cin >> tt >> tx >> ty;
             arr[i].t = tt; arr[i].x = tx; arr[i].y = ty;
         }
+        sort(arr, arr + n, sortX);
         lli ans[n];
         memset(ans, 0, sizeof(ans));
         bool is_possible[n][n];
         memset(is_possible, true, sizeof(is_possible));
         for(int i = 0 ; i < n ; i++) {
-            up_max = INT_MAX; down_max = 0;
+            slope_up = INT_MAX; slope_down = INT_MIN;
             if(i != n-1) {
                 r = i + 1;
                 while(r < n) {
+                    temp_slope = calcSlope(arr[i], arr[r]);
                     if(arr[r].t == 0) {
-                        if(arr[r].y >= down_max && down_max < up_max) {
+                        if(temp_slope >= slope_down && temp_slope <= slope_up) {
                             ans[i]++; ans[r]++;
-                            down_max = max(arr[r].y, down_max);
+                            slope_down = max(temp_slope, slope_down);
                         }
                     }
                     else {
-                        if(arr[r].y <= up_max && up_max > down_max) {
+                        if(temp_slope >= slope_down && temp_slope <= slope_up) {
                             ans[i]++; ans[r]++;
-                            up_max = min(arr[r].y, up_max);
+                            slope_up = min(temp_slope, slope_up);
                         }
                     }
                     r++;
