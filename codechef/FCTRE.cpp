@@ -114,8 +114,7 @@ int main() {
         while(q--) {
             cin >> a >> b;
             ans = computePath(a-1, b-1, edge_list, n, visited);
-            // for(int i = 0 ; i < ans.size(); i++) cout << ans[i] << "->";
-            // cout << endl;
+            // c// cout << endl;
             cout << bekaarPrime(ans, costs, prime) << endl;
         }
     }
