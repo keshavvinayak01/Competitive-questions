@@ -2,8 +2,7 @@
 
 using namespace std;
 
-vector<bool> processQueries(int a[], int n, vector<pair<int, int>> &queries,
-                            int q);
+vector<bool> processQueries(int a[], int n, vector<pair<int, int>> &queries, int q);
 
 int main() {
     int tc;
@@ -31,14 +30,35 @@ int main() {
 
 vector<bool> processQueries(int arr[], int n, vector<pair<int, int>> &queries,
                             int q) {
-    vector<bool> result;
-    int i, j;
-    for(int k = 0 ; k < q ; k++) {
-        i = queries[k].first;
-        j = queries[k].second;
-        while(arr[i+1] >= arr[i] && i < n) i++;
-        while(arr[j-1] >= arr[j] && j > 0) j--;
-        result.push_back(i == j);
+    int leftPtr = 0, rightPtr = n-1;
+    int* left = new int[n];
+    int* right = new int[n];
+    left[0] = 0; right[n-1] = n-1;
+    
+    // Setting Left array
+    for(int i = 1 ; i < n; i++) {
+        if(arr[i] > arr[i-1]) leftPtr = i;
+        left[i] = leftPtr;
     }
+    
+    // Setting Right array
+    for(int i = n-2 ; i >= 0; i--) {
+        if(arr[i] > arr[i+1]) rightPtr = i;
+        right[i] = rightPtr;
+    }
+
+    // Setting the boolean result array
+    vector<bool> result(q);
+    for(int i = 0 ; i < q; i++)
+        result[i] = right[queries[i].first] >= left[queries[i].second]; 
+    
+    // for(int i = 0 ; i < n ; i++) cout << left[i] << " ";
+    // cout << endl;
+
+    // for(int i = 0 ; i < n ; i++) cout << right[i] << " ";
+    // cout << endl;
+    
+    delete[] left;
+    delete[] right;
     return result;
 }
